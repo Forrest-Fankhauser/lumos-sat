@@ -4,15 +4,17 @@ import numpy as np
 import lumos.constants
 import lumos.functions
 
-def intensity_to_ab_mag(intensity : float | np.ndarray, clip : bool = True) -> float | np.ndarray:
+def intensity_to_ab_mag(intensity, clip):
     """
     Converts intensity to AB Magnitude
 
-    Parameters:
-        intensity (np.ndarray or float) : Intensity measured in watts / meter^2
-    
-    Returns:
-        ab_mag (np.ndarray or float) : Brightness in AB Magnitude
+    :param intensity: Intensity (W / m^2)
+    :type intensity: np.ndarray or float
+    :param clip: Whether or not to clip very small intensities
+    :type clip: bool
+    :return: AB Magnitude
+    :rtype: np.ndarray or float
+
     """
     log_val = intensity * lumos.constants.WAVELENGTH / (lumos.constants.SPEED_OF_LIGHT * 3631e-26)
     if clip:
