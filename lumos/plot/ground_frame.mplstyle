@@ -1,0 +1,19 @@
+font.size : 14
+axes.titlesize : 16
+axes.labelsize : 20
+xtick.labelsize : 18
+ytick.labelsize : 16
+legend.fontsize : 16
+figure.titlesize : 16
+
+figure.figsize : 12, 6.75
+figure.dpi : 160
+
+axes.titlepad: 14.0
+
+xtick.major.pad : 22
+
+grid.color:     "#ffffff"  # grid color
+grid.linestyle: -         # solid
+grid.linewidth: 0.5        # in points
+grid.alpha:     0.5        # transparency, between 0.0 and 1.0

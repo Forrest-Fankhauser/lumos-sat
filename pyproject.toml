@@ -1,0 +1,13 @@
+[project]
+name = "lumos"
+version = "1.0.0"
+description = "Satellite Brightness Calculation Tools"
+authors = [
+    {name = "Forrest Fankhauser", email = "fafankhauser@ucdavis.edu"},
+]
+requires-python = ">=3.10"
+readme = "README.md"
+dependencies = []
+
+[tool.setuptools]
+packages = ['lumos']
