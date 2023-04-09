@@ -1,49 +1,58 @@
-""" Simple calculations that are used throughout Lumos """
+""" Simple mathematical calculations that are used throughout Lumos """
 
 import numpy as np
 
-def Rx(theta : float, x : float, y : float, z : float) -> tuple[float, float, float]:
+def Rx(theta, x, y, z):
     """
-    Rotates points (x, y, z) about x-axis by angle theta
-
-    Parameters:
-        theta (float) : Angle of rotation (radians)
-        x, y, z (float) : Coordinates of starting point
+    Rotates points :math:`(x, y, z)` about x-axis by angle :math:`\\theta`.
     
-    Returns:
-        xp, yp, zp (float) : Coordinates of rotated point
+    :param theta:
+    :type theta: :class:`np.ndarray` or float
+    :param x:
+    :type x: :class:`np.ndarray` or float
+    :param y:
+    :type y: :class:`np.ndarray` or float
+    :param z:
+    :type z: :class:`np.ndarray` or float
+    :return: Rotated points :math:`(x^{\\prime}, y^{\\prime}, z^{\\prime})`
     """
     xp = x
     yp = np.cos(theta) * y - np.sin(theta) * z
     zp = np.sin(theta) * y + np.cos(theta) * z
     return xp, yp, zp
 
-def Ry(theta : float, x : float, y : float, z : float) -> tuple[float, float, float]:
+def Ry(theta, x, y, z):
     """
-    Rotates points (x, y, z) about y-axis by angle theta
-
-    Parameters:
-        theta (float) : Angle of rotation (radians)
-        x, y, z (float) : Coordinates of starting point
+    Rotates points :math:`(x, y, z)` about y-axis by angle :math:`\\theta`.
     
-    Returns:
-        xp, yp, zp (float) : Coordinates of rotated point
+    :param theta:
+    :type theta: :class:`np.ndarray` or float
+    :param x:
+    :type x: :class:`np.ndarray` or float
+    :param y:
+    :type y: :class:`np.ndarray` or float
+    :param z:
+    :type z: :class:`np.ndarray` or float
+    :return: Rotated points :math:`(x^{\\prime}, y^{\\prime}, z^{\\prime})`
     """
     xp = np.cos(theta) * x + np.sin(theta) * z
     yp = y
     zp = -np.sin(theta) * x + np.cos(theta) * z
     return xp, yp, zp
 
-def Rz(theta : float, x : float, y : float, z : float) -> tuple[float, float, float]:
+def Rz(theta, x, y, z):
     """
-    Rotates points (x, y, z) about z-axis by angle theta
-
-    Parameters:
-        theta (float) : Angle of rotation (radians)
-        x, y, z (float) : Coordinates of starting point
+    Rotates points :math:`(x, y, z)` about z-axis by angle :math:`\\theta`.
     
-    Returns:
-        xp, yp, zp (float) : Coordinates of rotated point
+    :param theta:
+    :type theta: :class:`np.ndarray` or float
+    :param x:
+    :type x: :class:`np.ndarray` or float
+    :param y:
+    :type y: :class:`np.ndarray` or float
+    :param z:
+    :type z: :class:`np.ndarray` or float
+    :return: Rotated points :math:`(x^{\\prime}, y^{\\prime}, z^{\\prime})`
     """
     xp = np.cos(theta) * x - np.sin(theta) * y
     yp = np.sin(theta) * x + np.cos(theta) * y
@@ -53,10 +62,10 @@ def Rz(theta : float, x : float, y : float, z : float) -> tuple[float, float, fl
 def det_2(a11, a12,
           a21, a22):
     """
-    det(A)
-
-    A = |a11 a12|
-        |a21 a22|
+    Calculates determinate of 2x2 matrix. Matrix components can be of type
+    :class:`np.ndarray` or float.
+    
+    Returns :math:`\\det \\begin{pmatrix} a_{11} & a_{12} \\\\ a_{21} & a_{22}\\end{pmatrix}`
     """
     return a11 * a22 - a21 * a12
 
@@ -64,11 +73,10 @@ def det_3(a11, a12, a13,
           a21, a22, a23,
           a31, a32, a33):
     """
-    det(A)
+    Calculates determinate of 3x3 matrix. Matrix components can be of type
+    :class:`np.ndarray` or float.
 
-    A = |a11 a12 a13|
-        |a21 a22 a23|
-        |a31 a32 a33|
+    Returns :math:`\\det \\begin{pmatrix} a_{11} & a_{12} & a_{13} \\\\ a_{21} & a_{22} & a_{23} \\\\ a_{31} & a_{32} & a_{33} \\end{pmatrix}`
     """
     return a11 * det_2(a22, a23, a32, a33) - a12 * det_2(a21, a23, a31, a33) + a13 * det_2(a21, a22, a31, a32)
 
@@ -76,11 +84,10 @@ def inv_3(a11, a12, a13,
           a21, a22, a23,
           a31, a32, a33):
     """
-    A^-1
+    Calculates inverse of 3x3 matrix. Matrix components can be of type
+    :class:`np.ndarray` or float.
 
-    A = |a11 a12 a13|
-        |a21 a22 a23|
-        |a31 a32 a33|
+    Returns :math:`\\begin{pmatrix} a_{11} & a_{12} & a_{13} \\\\ a_{21} & a_{22} & a_{23} \\\\ a_{31} & a_{32} & a_{33} \\end{pmatrix}^{-1}`
     """
     c = 1 / det_3(a11, a12, a13,
                   a21, a22, a23,
