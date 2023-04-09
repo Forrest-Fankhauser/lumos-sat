@@ -8,6 +8,82 @@ import lumos.plot
 import lumos.conversions as conversions
 import scipy.ndimage
 
+def plot_colorbar(cax, levels, label):
+    norm = matplotlib.colors.Normalize(vmin = levels[0], vmax = levels[1])
+    sm = matplotlib.cm.ScalarMappable(norm, cmap = 'plasma_r')
+    plt.colorbar(sm, label = label, cax = cax, location = 'left')
+    cax.invert_yaxis()
+    cax.set_xlim((0,1))
+    cax.set_aspect(18 / (levels[1] - levels[0]))
+
+def plot_contour(
+    ax,
+    altitudes, 
+    azimuths, 
+    intensities, 
+    sun_az,
+    levels,
+    filter = False,
+    title = None):
+    """
+    Creates AB Magnitude plot in ground frame
+        Parameters:
+            altitudes (np.ndarray) : Altitudes (degrees)
+            azimuths (np.ndarray) : Azimuths (degrees)
+            intensities (np.ndarray) : Calculated intensities (W / m^2)
+            sun_alt (float) : Altitude of sun (degrees)
+            sun_az (float) : Azimuth of sun (degrees)
+            levels (tuple[int, int]) : Maximum and minimum AB Magnitude to show on plot
+            title (str) : Plot title
+            save_file (str) : Path to output file
+    """
+    
+    if filter:
+        intensities = scipy.ndimage.gaussian_filter(intensities, 2, mode = ('wrap', 'reflect'))
+    
+    ab_mags = conversions.intensity_to_ab_mag(intensities, clip = True)
+    ab_mags = np.clip(ab_mags, levels[0] + 0.01, levels[1] - 0.01)
+
+    cmap = matplotlib.colormaps['plasma_r']
+    ax.contourf(
+        np.deg2rad(azimuths),
+        90 - altitudes,
+        ab_mags,
+        cmap = cmap,
+        levels = range(levels[0], levels[1] + 1)
+        )
+    
+    # ax.plot(
+    #     [np.deg2rad(sun_az)],
+    #     [95],
+    #     marker = (3, 0, 180 - sun_az),
+    #     markersize = 6,
+    #     color = "black",
+    #     clip_on = False
+    # )
+
+    # ax.plot(
+    #     [np.deg2rad(sun_az)],
+    #     [101],
+    #     marker = '$\u2600$',
+    #     markersize = 10,
+    #     color = "orange",
+    #     clip_on = False
+    # )
+
+    ax.set_rmax(90)
+    ax.set_yticklabels([])
+    ax.set_theta_zero_location('N')
+    ax.set_theta_direction(-1)
+    ax.set_rticks([10, 20, 30, 40, 50, 60, 70, 80, 90])
+    ax.set_xticks(np.deg2rad([0, 90, 180, 270]))
+    ax.set_xticklabels(['N', 'E', 'S', 'W'])
+    ax.set_rlabel_position(-22.5)
+    ax.grid(True)
+
+    if title != None:
+        ax.set_title(title)
+
 def plot_AB_Mag_contour(altitudes : np.ndarray, 
                         azimuths : np.ndarray, 
                         intensities : np.ndarray, 

@@ -127,3 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Sphinx Auto-Documentation
+docs/source/generated/
+docs/source/_autosummary/

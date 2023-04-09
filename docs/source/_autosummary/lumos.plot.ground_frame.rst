@@ -1,4 +1,4 @@
-lumos.plot.ground\_frame
+﻿lumos.plot.ground\_frame
 ========================
 
 .. automodule:: lumos.plot.ground_frame
@@ -17,6 +17,8 @@ lumos.plot.ground\_frame
    
       plot_AB_Mag_contour
       plot_AB_Mag_scatter
+      plot_colorbar
+      plot_contour
    
    
 

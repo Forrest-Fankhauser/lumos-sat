@@ -4,7 +4,7 @@ import numpy as np
 import lumos.constants
 import lumos.functions
 
-def intensity_to_ab_mag(intensity, clip):
+def intensity_to_ab_mag(intensity, clip = True):
     """
     Converts intensity to AB Magnitude
 

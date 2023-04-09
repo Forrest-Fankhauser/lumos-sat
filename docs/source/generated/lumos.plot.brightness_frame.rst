@@ -1,4 +1,4 @@
-lumos.plot.brightness\_frame
+﻿lumos.plot.brightness\_frame
 ============================
 
 .. automodule:: lumos.plot.brightness_frame
@@ -14,6 +14,7 @@ lumos.plot.brightness\_frame
    .. autosummary::
    
       plot_AB_Mag
+      plot_contour
    
    
 
