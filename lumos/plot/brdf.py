@@ -1,7 +1,7 @@
 import numpy as np
 import lumos.conversions
 
-def plot1D(ax, brdf_model, incident_angles = (10, 30, 50, 70)):
+def plot1D(ax, brdf_model, incident_angles = (10, 30, 50, 70), log_space = True):
     """
     Plots the in-plane BRDF at given incident angles.
 
@@ -11,13 +11,19 @@ def plot1D(ax, brdf_model, incident_angles = (10, 30, 50, 70)):
     :type brdf_model: callable
     :param incident_angles: Incident angles for which to plot BRDF model (degrees)
     :type incident_angles: tuple, optional
+    :param log_space: Whether to plot in log space
+    :type log_space: bool, optional
     """
     for angle in incident_angles:
         x = np.linspace(-90, 90, 400)
         ix, iy, iz = lumos.conversions.spherical_to_unit(np.deg2rad(angle), np.pi)
         ox, oy, oz = lumos.conversions.spherical_to_unit(np.deg2rad(x), 0)
         y = brdf_model((ix, iy, iz), (0, 0, 1), (ox, oy, oz))
-        ax.semilogy(x, y, label = r"$\phi_{in}$ = " + f"{angle:0.1f}°")
+        label = r"$\phi_{in}$ = " + f"{angle:0.1f}°"
+        if log_space:
+            ax.semilogy(x, y, label = label)
+        else:
+            ax.plot(x, y, label = label)
     ax.legend()
 
 def plot2D(polar_ax, brdf_model, incident_angle):

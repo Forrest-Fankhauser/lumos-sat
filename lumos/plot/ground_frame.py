@@ -84,6 +84,64 @@ def plot_contour(
     if title != None:
         ax.set_title(title)
 
+def plot_contour_mollweide(
+    ax,
+    altitudes, 
+    azimuths, 
+    intensities,
+    levels,
+    filter = False,
+    title = None):
+    """
+    Creates AB Magnitude plot in ground frame
+        Parameters:
+            altitudes (np.ndarray) : Altitudes (degrees)
+            azimuths (np.ndarray) : Azimuths (degrees)
+            intensities (np.ndarray) : Calculated intensities (W / m^2)
+            sun_alt (float) : Altitude of sun (degrees)
+            sun_az (float) : Azimuth of sun (degrees)
+            levels (tuple[int, int]) : Maximum and minimum AB Magnitude to show on plot
+            title (str) : Plot title
+            save_file (str) : Path to output file
+    """
+    
+    if filter:
+        intensities = scipy.ndimage.gaussian_filter(intensities, 2, mode = ('wrap', 'reflect'))
+    
+    ab_mags = conversions.intensity_to_ab_mag(intensities, clip = True)
+    ab_mags = np.clip(ab_mags, levels[0] + 0.01, levels[1] - 0.01)
+
+    cmap = matplotlib.colormaps['plasma_r']
+
+    x, y, z = lumos.conversions.altaz_to_unit(altitudes, azimuths)
+    x, y, z = z, y, x
+
+    lat = np.arcsin(z)
+    lon = np.arctan2(y, x)
+    
+    ax.contourf(
+        lon,
+        lat,
+        ab_mags,
+        cmap = cmap,
+        levels = range(levels[0], levels[1] + 1)
+        )
+
+    # ax.set_rmax(90)
+    # ax.set_yticklabels([])
+    # ax.set_theta_zero_location('N')
+    # ax.set_theta_direction(-1)
+    # ax.set_rticks([10, 20, 30, 40, 50, 60, 70, 80, 90])
+    # ax.set_xticks(np.deg2rad([0, 90, 180, 270]))
+    # ax.set_xticklabels(['N', 'E', 'S', 'W'])
+    # ax.set_rlabel_position(-22.5)
+    ax.grid(False)
+    ax.set_xticks([])
+    ax.set_yticks([])
+
+    if title != None:
+        ax.set_title(title)
+
 def plot_AB_Mag_contour(altitudes : np.ndarray, 
                         azimuths : np.ndarray, 
                         intensities : np.ndarray, 

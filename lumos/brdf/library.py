@@ -98,8 +98,8 @@ def PHONG(Kd : float = 0.5, Ks : float = 0.5, n : float = 1) -> callable:
     Phong BRDF model
 
     Parameters:
-        Kd (float) : Diffuse coefficient. Ensure Kd + Ks = 1
-        Ks (float) : Specular coefficient. Ensure Kd + Ks = 1
+        Kd (float) : Diffuse coefficient. Ensure Kd + Ks <= 1
+        Ks (float) : Specular coefficient. Ensure Kd + Ks <= 1
         n (int) : Specularity. Controls width of specular peak.
     Returns:
         BRDF (callable) : BRDF function which can be used to create a lumos.geometry.Surface object
