@@ -1,16 +1,21 @@
 """
 Geometry objects which are used throughout Lumos
 """
+
 import numpy as np
 import lumos.constants
 class Surface:
-    """ Object to hold area, normal vector, and BRDF of a surface """
-    def __init__(self, area : float, normal : np.ndarray, brdf : callable):
+    """ Container to hold area, normal vector, and BRDF of a surface """
+    def __init__(self, area, normal, brdf):
         """
-        Parameters:
-            area (float) : Area of surface (meters ^ 2)
-            normal (np.ndarray) : Normal vector of surface. Measured in brightness frame.
-            brdf (callable) : BRDF of surface
+        :param area: Area of surface :math:`m^2`
+        :type area: float
+        :param normal: Normal vector of surface. Measured in brightness frame. A function of
+        the angle past terminator may be passed, which must return the surface normal as 
+        a :class:`np.ndarray` for given angles past the terminator.
+        :type normal: :class:`np.ndarray` or function
+        :param brdf: Bidirectional Reflectance Distribution Function (BRDF) of surface.
+        :type brdf: function
         """
         self.area = area
         self.normal = normal
@@ -26,11 +31,12 @@ class EarthMesh:
     """
     A mesh of points on Earth's surface
     """
-    def __init__(self, angles_off_plane : np.ndarray, angles_on_plane : np.ndarray):
+    def __init__(self, angles_off_plane, angles_on_plane):
         """
-        Parameters:
-            angles_off_plane (np.ndarray) : 1D array of the angles-off-plane of the mesh
-            angles_on_plane (np.ndarray) : 1D array of the angles-on-plane of the mesh
+        :param angles_off_plane: 1D array of the angles-off-plane of the mesh.
+        :type angles_off_plane: :class:`np.ndarray`
+        :param angles_on_plane: 1D array of the angles-on-plane of the mesh.
+        :type angles_on_plane: :class:`np.ndarray`
         """
         self.d_phi = np.abs(angles_off_plane[1] - angles_off_plane[0])
         self.d_theta = np.abs(angles_on_plane[1] - angles_on_plane[0])
@@ -61,12 +67,14 @@ class GroundObservers(EarthMesh):
     A mesh of observers visible to the satellite and on the night side of earth
     """
 
-    def __init__(self, sat_height : float, angle_past_terminator : float, density : int):
+    def __init__(self, sat_height, angle_past_terminator, density):
         """
-        Parameters:
-            sat_height (float) : Geodetic height of satellite (meters)
-            angle_past_terminator (float) : Angle of satellite past the terminator (radians)
-            density (int) : Mesh will have size density x density
+        :param sat_height: Geodetic height of satellite (meters)
+        :type sat_height: float
+        :param angle_past_terminator: Angle of satellite past the terminator (radians)
+        :type angle_past_terminator: float
+        :param density: Mesh will have size density x density
+        :type density: int
         """
         self.max_angle = np.arccos(lumos.constants.EARTH_RADIUS 
                                    / (lumos.constants.EARTH_RADIUS + sat_height))
