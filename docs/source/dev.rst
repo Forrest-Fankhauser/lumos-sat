@@ -17,7 +17,7 @@ To build Lumos, use the following commands:
 
 .. code-block:: console
 
-   (.venv) $ python build
+   (.venv) $ python -m build
    (.venv) $ twine check dist/*
    (.venv) $ twine upload -r testpypi dist/*
    (.venv) $ twine upload dist/*
