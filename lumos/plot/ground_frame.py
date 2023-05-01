@@ -2,6 +2,7 @@
 
 import matplotlib.pyplot as plt
 import matplotlib.cm
+import matplotlib.colors
 import matplotlib.gridspec
 import numpy as np
 import lumos.plot
@@ -9,12 +10,13 @@ import lumos.conversions as conversions
 import scipy.ndimage
 
 def plot_colorbar(cax, levels, label):
-    norm = matplotlib.colors.Normalize(vmin = levels[0], vmax = levels[1])
-    sm = matplotlib.cm.ScalarMappable(norm, cmap = 'plasma_r')
-    plt.colorbar(sm, label = label, cax = cax, location = 'left')
+    cmap = matplotlib.colormaps['plasma_r']
+    norm = matplotlib.colors.Normalize(levels[0], levels[1])
+    plt.colorbar(matplotlib.cm.ScalarMappable(norm=norm, cmap=cmap), cax = cax, extend = 'both')
     cax.invert_yaxis()
-    cax.set_xlim((0,1))
-    cax.set_aspect(18 / (levels[1] - levels[0]))
+    cax.set_aspect(3)
+    cax.set_ylabel(label)
+    cax.yaxis.set_label_position("left")
 
 def plot_contour(
     ax,
@@ -42,15 +44,17 @@ def plot_contour(
         intensities = scipy.ndimage.gaussian_filter(intensities, 2, mode = ('wrap', 'reflect'))
     
     ab_mags = conversions.intensity_to_ab_mag(intensities, clip = True)
-    ab_mags = np.clip(ab_mags, levels[0] + 0.01, levels[1] - 0.01)
 
     cmap = matplotlib.colormaps['plasma_r']
-    ax.contourf(
+    norm = matplotlib.colors.Normalize(levels[0], levels[1])
+    cf = ax.contourf(
         np.deg2rad(azimuths),
         90 - altitudes,
         ab_mags,
         cmap = cmap,
-        levels = range(levels[0], levels[1] + 1)
+        norm = norm,
+        levels = range(levels[0], levels[1] + 1),
+        extend = 'both'
         )
     
     # ax.plot(
@@ -74,7 +78,7 @@ def plot_contour(
     ax.set_rmax(90)
     ax.set_yticklabels([])
     ax.set_theta_zero_location('N')
-    ax.set_theta_direction(-1)
+    #ax.set_theta_direction(-1)
     ax.set_rticks([10, 20, 30, 40, 50, 60, 70, 80, 90])
     ax.set_xticks(np.deg2rad([0, 90, 180, 270]))
     ax.set_xticklabels(['N', 'E', 'S', 'W'])
