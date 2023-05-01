@@ -1,1 +1,1 @@
-lumos-sat == 1.0.3
+lumos-sat == 1.0.4

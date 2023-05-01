@@ -1,6 +1,6 @@
 [project]
 name = "lumos-sat"
-version = "1.0.3"
+version = "1.0.4"
 description = "Satellite Brightness Calculation Tools"
 authors = [
     {name = "Forrest Fankhauser", email = "fafankhauser@ucdavis.edu"},
