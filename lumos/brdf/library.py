@@ -1,36 +1,44 @@
+""" A catalog of useful and common BRDF models """
 import numpy as np
 
-def LAMBERTIAN(TIS : float = 1.0) -> callable:
+def LAMBERTIAN(albedo):
     """
-    Lambertian scattering model
+    Lambertian scattering model.
 
-    Parameters:
-        TIS (float) : Total integrated scatter, should be between 0.0 and 1.0
-    Returns:
-        BRDF (callable) : BRDF function which can be used to create a lumos.geometry.Surface object
+    :math:`BRDF = \\frac{\\rho}{\\pi}`
+
+    :param albedo: Albedo, should be between 0.0 and 1.0
+    :type albedo: float
+    :return: BRDF function, where f = BRDF(incident vector, normal_vector, outgoing_vector)
+    :rtype: function
     """
     def BRDF(incident_vector, normal_vector, outgoing_vector):
         ix, iy, iz = incident_vector
         nx, ny, nz = normal_vector
         ox, oy, oz = outgoing_vector
 
-        brdf = np.where(ix*nx + iy*ny + iz*nz < 0, 0, TIS / np.pi)
-        brdf = np.where(ox*nx + oy*ny + oz*nz < 0, 0, TIS / np.pi)
+        brdf = np.where(ix*nx + iy*ny + iz*nz < 0, 0, albedo / np.pi)
+        brdf = np.where(ox*nx + oy*ny + oz*nz < 0, 0, albedo / np.pi)
 
         return brdf
     
     return BRDF
 
-def ABG(A : float = 0.1, B : float = 0.1, g : float = 1.0) -> callable:
+def ABG(A, B, g):
     """
-    ABg scattering model
+    ABG scattering model. 
+    Described here: `Using the ABG model <https://support.zemax.com/hc/en-us/articles/4408106806163-Fitting-ABg-scattering-coefficients-from-raw-measured-data>`_
 
-    Parameters:
-        A (float) : Amplitude parameter, A/B is the specular peak
-        B (float) : Knee parameter, B determines where the BRDF transitions to exponential decay
-        g (float) : Slope parameter, g determines the slope of the BRDF in log-log space
-    Returns:
-        BRDF (callable) : BRDF function which can be used to create a lumos.geometry.Surface object
+    :math:`BRDF = \\frac{A}{B + x^g}`
+
+    :param A: Amplitude parameter, A/B is the specular peak
+    :type A: float
+    :param B: Knee parameter, B determines where the BRDF transitions to exponential decay
+    :type B: float
+    :param g: Slope parameter, g determines the slope of the BRDF in log-log space
+    :type g: float
+    :return: BRDF function, where f = BRDF(incident vector, normal_vector, outgoing_vector)
+    :rtype: function
     """
     def BRDF(incident_vector, normal_vector, outgoing_vector):
         ix, iy, iz = incident_vector
@@ -63,16 +71,20 @@ def ABG(A : float = 0.1, B : float = 0.1, g : float = 1.0) -> callable:
     
     return BRDF
 
-def GAUSSIAN(A = 1.0, sigma = 1.0) -> callable:
+def GAUSSIAN(A, sigma):
     """
-    Gaussian scattering model
+    Gaussian scattering model. 
 
-    Parameters:
-        A (float) : Specular peak of BRDF
-        sigma (float) : Width of specular peak
-    Returns:
-        BRDF (callable) : BRDF function which can be used to create a lumos.geometry.Surface object
+    :math:`BRDF = A e^{\\frac{\\hat{w}_r\\cdot\\hat{w}_o - 1}{\\sigma}}`
+
+    :param A: Height of specular peak of BRDF
+    :type A: float
+    :param sigma: Width of specular peak
+    :type sigma: float
+    :return: BRDF function, where f = BRDF(incident vector, normal_vector, outgoing_vector)
+    :rtype: function
     """
+
     def BRDF(incident_vector, normal_vector, outgoing_vector):
         ix, iy, iz = incident_vector
         nx, ny, nz = normal_vector
@@ -93,17 +105,22 @@ def GAUSSIAN(A = 1.0, sigma = 1.0) -> callable:
     
     return BRDF
 
-def PHONG(Kd : float = 0.5, Ks : float = 0.5, n : float = 1) -> callable:
+def PHONG(Kd, Ks, n):
     """
-    Phong BRDF model
+    Phong scattering model. 
 
-    Parameters:
-        Kd (float) : Diffuse coefficient. Ensure Kd + Ks <= 1
-        Ks (float) : Specular coefficient. Ensure Kd + Ks <= 1
-        n (int) : Specularity. Controls width of specular peak.
-    Returns:
-        BRDF (callable) : BRDF function which can be used to create a lumos.geometry.Surface object
+    :math:`BRDF = \\frac{K_d}{\\pi} + K_s\\frac{n + 2}{2 \\pi} (\\hat{w}_r \\cdot \\hat{w}_o)^n`
+
+    :param Kd: Diffuse coefficient. Ensure :math:`Kd + Ks \\leq 1`
+    :type Kd: float
+    :param Ks: Specular coefficient. Ensure :math:`Kd + Ks \\leq 1`
+    :type Ks: float
+    :param n: Controls width of specular peak.
+    :type n: float
+    :return: BRDF function, where f = BRDF(incident vector, normal_vector, outgoing_vector)
+    :rtype: function
     """
+
     def BRDF(incident_vector, normal_vector, outgoing_vector):
         ix, iy, iz = incident_vector
         nx, ny, nz = normal_vector
@@ -126,17 +143,22 @@ def PHONG(Kd : float = 0.5, Ks : float = 0.5, n : float = 1) -> callable:
     
     return BRDF
 
-def BINOMIAL(B : np.ndarray, C : np.ndarray, d : float, l1 : int) -> callable:
+def BINOMIAL(B, C, d, l1):
     """
     Binomial scattering model proposed by Greynolds.
 
-    Parameters:
-        B (np.ndarray) : b_i model coefficients
-        C (np.ndarray) : c_i model coefficients
-        d (np.ndarray) : specularity constant
-        l1 (int) : Minimum Gaussian index
-    Returns:
-        BRDF (callable) : BRDF function which can be used to create a lumos.geometry.Surface object
+    Described here: `Physically Realistic BRDF Models <https://www.researchgate.net/publication/300345613_General_physically-realistic_BRDF_models_for_computing_stray_light_from_arbitrary_isotropic_surfaces>`_
+
+    :param B: b_i model coefficients
+    :type B: :class:`np.ndarray`
+    :param C: c_i model coefficients
+    :type C: :class:`np.ndarray`
+    :param d: specularity constant
+    :type d: float
+    :param l1: Minimum Gaussian index
+    :type l1: int
+    :return: BRDF function, where f = BRDF(incident vector, normal_vector, outgoing_vector)
+    :rtype: function
     """
 
     def BRDF(incident_vector, normal_vector, outgoing_vector):
@@ -187,18 +209,3 @@ def BINOMIAL(B : np.ndarray, C : np.ndarray, d : float, l1 : int) -> callable:
         return brdf
     
     return BRDF
-
-class BinomialHelper:
-    def __init__(self, n, m, l1, l2):
-        self.n = n
-        self.m = m
-        self.l1 = l1
-        self.l2 = l2
-        self.N_params = n * m + (l2 - l1) * n + 1
-
-    def pack_params(self, *params):
-        params = np.array(params)
-        B = np.reshape( params[:self.n * self.m], (self.n, self.m) )
-        C = np.reshape( params[self.n * self.m:-1], (self.n, self.l2 - self.l1))
-        d = np.abs(params[-1])
-        return B, C, d

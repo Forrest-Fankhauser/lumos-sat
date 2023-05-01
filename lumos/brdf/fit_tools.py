@@ -7,26 +7,29 @@ import scipy.optimize
 import lumos.conversions
 
 def fit_model(
-        data_file : str, 
-        model_func : callable, 
-        p0 : tuple[float, ...], 
-        bounds : tuple[float, ...],
-        log_space : bool = True,
-        clip : float = 1e-4
-        ) -> tuple[float, ...]:
+        data_file,
+        model_func,
+        bounds,
+        p0,
+        log_space = True,
+        clip = 0
+        ):
     
     """
     Fits a model to experimental data.
 
-    Parameters:
-        data_file (str) : File containing experimental data.
-        model_func (callable) : Given parameters *params, returns BRDF callable
-        p0 (tuple) : Initial guess for fitting parameters, passed to scipy.optimize.curve_fit
-        bounds (tuple) : Bounds for fitting parameters, passed to scipy.optimize.curve_fit
-        clip (float) : Clips BRDF data below this value
-    
-    Returns:
-        popt (tuple) : Optimal parameters returned from scipy.optimize.curve_fit
+    :param data_file: A path to a .csv file containing BRDF data. DESCRIBE FORMAT.
+    :type data_file: str
+    :param model_func: A BRDF model to fit
+    :type model_func: function
+    :param bounds: Bounds passed to :function:`scipy.optimize.curve_fit`
+    :type bounds: tuple
+    :param p0: Initial guess for parameters passed to :function:`scipy.optimize.curve_fit`
+    :type p0: tuple
+    :param log_space: Whether or not to fit BRDF in log_space
+    :type log_space: bool
+    :param clip: Removes BRDF data below this cutoff from fitting
+    :type clip: float
     """
 
     data = np.loadtxt(data_file, skiprows = 1)

@@ -1,3 +1,5 @@
+""" Plotting functions for BRDF """
+
 import numpy as np
 import lumos.conversions
 
@@ -8,7 +10,7 @@ def plot1D(ax, brdf_model, incident_angles = (10, 30, 50, 70), log_space = True)
     :param ax: Plotting axis
     :type ax: :class:`matplotlib.pyplot.axes`
     :param brdf_model: BRDF function to plot
-    :type brdf_model: callable
+    :type brdf_model: function
     :param incident_angles: Incident angles for which to plot BRDF model (degrees)
     :type incident_angles: tuple, optional
     :param log_space: Whether to plot in log space
@@ -33,7 +35,7 @@ def plot2D(polar_ax, brdf_model, incident_angle):
     :param ax: Plotting axis. Must have polar projection.
     :type ax: :class:`matplotlib.axes.Axes`
     :param brdf_model: BRDF function to plot
-    :type brdf_model: callable
+    :type brdf_model: function
     :param incident_angle: Incident angle for which to plot BRDF model (degrees)
     :type incident_angle: float
     """

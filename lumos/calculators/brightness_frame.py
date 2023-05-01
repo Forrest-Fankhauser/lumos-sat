@@ -1,29 +1,28 @@
 """
 Intensity calculations in the brightness reference frame.
 """
+
 import numpy as np
 import lumos.constants
 import lumos.geometry
 
-def get_earthshine_panels(sat_z : float, angle_past_terminator : float, density : int) \
-      -> tuple[np.ndarray, ...]:
+def get_earthshine_panels(sat_z, angle_past_terminator, density):
     """
-    Creates mesh of panels on Earth's surface.
+    Creates a mesh of pixels on Earth's surface which are visible to the satellite and illuminated
+    by the sun.
 
-    Parameters:
-        sat_z (float): The height of the satellite above geodetic nadir (meters)
-        angle_past_terminator (float): The angle of the satellite past terminator (radians)
-        density (int): The density of the panels. Grid will have size density x 
-    
-    Returns:
-        x (np.ndarray): x positions of panels (meters)
-        y (np.ndarray): y positions of panels (meters)
-        z (np.ndarray): z positions of panels (meters)
-        nx (np.ndarray): x component of panel normals
-        ny (np.ndarray): y component of panel normals
-        nz (np.ndarray): z component of panel normals
-        areas (np.ndarray): areas of panels (meters ^ 2)
+    :param sat_z: The height of the satellite above the center of Earth (meters)
+    :type sat_z: float
+    :param angle_past_terminator: The angle of the satellite past the terminator (radians)
+    :type angle_past_terminator: float
+    :param density: The density of the pixels. Grid will have size density x density.
+    :type density: int
+    :returns: 
+        - (x, y, z) - Positions of pixels (meters)
+        - (nx, ny, nz) - Normal vectors of pixels
+        - areas - Areas of pixels (:math:`m^2`)
     """
+
     R = lumos.constants.EARTH_RADIUS
 
     max_angle = np.arccos(R / sat_z)
@@ -74,29 +73,40 @@ def get_earthshine_panels(sat_z : float, angle_past_terminator : float, density 
     
     return x, y, z, nx, ny, nz, areas
 
-def calculate_intensity(sat_surfaces : list[lumos.geometry.Surface], 
-                        sat_altitude : float, 
-                        angle_past_terminator : float,
-                        observer_position : float,
-                        include_sun : bool = True, 
-                        include_earthshine : bool = True,
-                        earth_panel_density : int = 150, 
-                        earth_brdf : callable = None) -> float:
+def calculate_intensity(
+    sat_surfaces, 
+    sat_height, 
+    angle_past_terminator,
+    observer_position,
+    include_sun = True, 
+    include_earthshine = True,
+    earth_panel_density = 150, 
+    earth_brdf = None):
     '''
-        Parameters:
-            sat_surfaces (list[lumos.geometry.Surface]) : A list of lumos.geometry.general.Surface objects
-            sat_altitude (float) : Height of satellite above geodetic nadir (meters)
-            angle_past_terminator (float) : Angle of satellite past terminator (radians)
-            include_sun (bool) : Whether to include brightness directly reflected from sun
-            include_earthshine (bool) : Whether to include brightness caused by earthshine
-            earth_panel_density (int) : There will be earth_panel_density^2 panels in the earthshine mesh
-            earth_brdf (callable) : A function representing the BRDF of earth
-        
-        Returns:
-            intensity (float) : The intensity of light incident on the observer (W / m^2)
+    Calculates flux scattered by a satellite and seen by an observer.
+
+    :param sat_surfaces: List of surfaces on satellite
+    :type sat_surfaces: list[lumos.geometry.Surface]
+    :param sat_height: Height of satellite above geodetic nadir (meters)
+    :type sat_height: float
+    :param angle_past_terminator: Angle of satellite past terminator (radians)
+    :type angle_past_terminator: float
+    :param observer_position: Position of an observer, measured in brightness frame (meters)
+    :type observer_position: :class:`np.ndarray`
+    :param include_sun: Whether to include flux scattered by the satellite from the sun
+    :type include_sun: bool, optional
+    :param include_earthshine: Whether to include flux scattered by the satellite from earthshine
+    :type include_earthshine: bool, optional
+    :param earth_panel_density: There will be earth_panel_density x earth_panel_density 
+    panels in the earthshine mesh
+    :type earth_panel_density: int
+    :param earth_brdf: A function representing the BRDF of Earth's surface
+    :type earth_brdf: function
+    :return: Flux of light incident on the observer (W / m^2)
+    :rtype: float
     '''
     
-    horizon_angle = np.arccos(lumos.constants.EARTH_RADIUS / (lumos.constants.EARTH_RADIUS + sat_altitude))
+    horizon_angle = np.arccos(lumos.constants.EARTH_RADIUS / (lumos.constants.EARTH_RADIUS + sat_height))
     if angle_past_terminator > horizon_angle:
         # Inside earth's shadow
         return 0
@@ -110,7 +120,7 @@ def calculate_intensity(sat_surfaces : list[lumos.geometry.Surface],
 
     vector_2_sun = (0, np.cos(angle_past_terminator), - np.sin(angle_past_terminator))
 
-    sat_z = sat_altitude + lumos.constants.EARTH_RADIUS
+    sat_z = sat_height + lumos.constants.EARTH_RADIUS
 
     # Distances from observers to satellite
     dist_sat_2_obs = np.sqrt( observer_x**2 + observer_y**2 
