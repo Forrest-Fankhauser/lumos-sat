@@ -3,7 +3,8 @@
 
    Home page <self>
    Usage <usage>
-   API reference <_autosummary/lumos>
+   For Developers <dev>
+   API Reference <_autosummary/lumos>
 
 Welcome to the Lumos documentation
 ==================================
