@@ -97,9 +97,8 @@ def calculate_intensity(
     :type include_sun: bool, optional
     :param include_earthshine: Whether to include flux scattered by the satellite from earthshine
     :type include_earthshine: bool, optional
-    :param earth_panel_density: There will be earth_panel_density x earth_panel_density 
-    panels in the earthshine mesh
-    :type earth_panel_density: int
+    :param earth_panel_density: There will be earth_panel_density x earth_panel_density panels in the earthshine mesh
+    :type earth_panel_density: int, optional
     :param earth_brdf: A function representing the BRDF of Earth's surface
     :type earth_brdf: function
     :return: Flux of light incident on the observer (W / m^2)

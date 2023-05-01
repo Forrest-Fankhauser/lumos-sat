@@ -75,7 +75,7 @@ def GAUSSIAN(A, sigma):
     """
     Gaussian scattering model. 
 
-    :math:`BRDF = A e^{\\frac{\\hat{w}_r\\cdot\\hat{w}_o - 1}{\\sigma}}`
+    :math:`BRDF = A exp(\\frac{\\hat{w}_r\\cdot\\hat{w}_o - 1}{\\sigma})`
 
     :param A: Height of specular peak of BRDF
     :type A: float
