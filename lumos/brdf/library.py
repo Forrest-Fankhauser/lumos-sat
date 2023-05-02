@@ -209,3 +209,18 @@ def BINOMIAL(B, C, d, l1):
         return brdf
     
     return BRDF
+
+class BinomialHelper:
+    def __init__(self, n, m, l1, l2):
+        self.n = n
+        self.m = m
+        self.l1 = l1
+        self.l2 = l2
+        self.N_params = n * m + (l2 - l1) * n + 1
+
+    def pack_params(self, *params):
+        params = np.array(params)
+        B = np.reshape( params[:self.n * self.m], (self.n, self.m) )
+        C = np.reshape( params[self.n * self.m:-1], (self.n, self.l2 - self.l1))
+        d = np.abs(params[-1])
+        return B, C, d

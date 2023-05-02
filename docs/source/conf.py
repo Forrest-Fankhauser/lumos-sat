@@ -8,6 +8,7 @@ author = 'Forrest Fankhauser'
 extensions = [
    'sphinx.ext.autodoc',
    'sphinx.ext.autosummary',
+   'sphinx.ext.viewcode'
 ]
 
 autosummary_typehints = None
@@ -20,3 +21,5 @@ exclude_patterns = []
 
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
+html_context = { 'display_github': False }
+html_show_sourcelink = False
