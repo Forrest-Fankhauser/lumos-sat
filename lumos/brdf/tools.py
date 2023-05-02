@@ -1,12 +1,12 @@
 """
-Tools for fitting experimental BRDF data to models
+Tools for working with BRDF models and data
 """
 
 import numpy as np
 import scipy.optimize
 import lumos.conversions
 
-def fit_model(
+def fit(
         data_file,
         model_func,
         bounds,
@@ -73,3 +73,25 @@ def fit_model(
                                        p0 = p0)
 
     return popt
+
+def pack_binomial_parameters(self, n, m, l1, l2, *params):
+    """
+    Convert list into B & C matrices, which can then be passed to the Binomial Model
+
+    :param n: n
+    :type n: int
+    :param m: m
+    :type m: int
+    :param l1: l1
+    :type l1: int
+    :param l2: l2, ensure l2 > l1
+    :type l2: int
+    :param params: list of values
+    :type params: list[float]
+    :return: B, C, d
+    :rtype: :class:`np.ndarray`, :class:`np.ndarray`, float
+    """
+    params = np.array(params)
+    B = np.reshape( params[:n * m], (n, m) )
+    C = np.reshape( params[n * m:], (n, l2 - l1))
+    return B, C
