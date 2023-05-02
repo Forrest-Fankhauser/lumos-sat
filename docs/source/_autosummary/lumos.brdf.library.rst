@@ -1,4 +1,4 @@
-﻿lumos.brdf.library
+lumos.brdf.library
 ==================
 
 .. automodule:: lumos.brdf.library
@@ -24,15 +24,6 @@
    
 
    
-   
-   .. rubric:: Classes
-
-   .. autosummary::
-      :toctree:
-      :template: class-template.rst
-      :nosignatures:
-   
-      BinomialHelper
    
    
 

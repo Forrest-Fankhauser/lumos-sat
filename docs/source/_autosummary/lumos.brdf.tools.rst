@@ -1,7 +1,7 @@
-lumos.video\_tools
-==================
+lumos.brdf.tools
+================
 
-.. automodule:: lumos.video_tools
+.. automodule:: lumos.brdf.tools
 
    
    
@@ -15,7 +15,8 @@ lumos.video\_tools
       :toctree:
       :nosignatures:
    
-      create_video
+      fit
+      pack_binomial_parameters
    
    
 

@@ -26,6 +26,6 @@ lumos.brdf
    :template: module-template.rst
    :recursive:
 
-   lumos.brdf.fit_tools
    lumos.brdf.library
+   lumos.brdf.tools
 

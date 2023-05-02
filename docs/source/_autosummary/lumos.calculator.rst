@@ -1,7 +1,7 @@
-lumos.calculators.brightness\_frame
-===================================
+lumos.calculator
+================
 
-.. automodule:: lumos.calculators.brightness_frame
+.. automodule:: lumos.calculator
 
    
    
@@ -15,8 +15,10 @@ lumos.calculators.brightness\_frame
       :toctree:
       :nosignatures:
    
-      calculate_intensity
+      get_brightness_coords
       get_earthshine_panels
+      get_intensity_observer_frame
+      get_intensity_satellite_frame
    
    
 

@@ -27,11 +27,11 @@
    :recursive:
 
    lumos.brdf
-   lumos.calculators
+   lumos.calculator
    lumos.constants
+   lumos.constellation
    lumos.conversions
    lumos.functions
    lumos.geometry
    lumos.plot
-   lumos.video_tools
 
