@@ -10,6 +10,9 @@ import lumos.conversions
 import lumos.constants
 import lumos.geometry
 
+import os
+import cv2
+
 def BRDF_1D(ax, brdf_model, incident_angles = (10, 30, 50, 70), log_space = True):
     """
     Plots the in-plane BRDF at given incident angles.
@@ -260,3 +263,28 @@ def mark_sun_altitude_observer_frame(
     plot_alt = np.clip(sun_altitude, -18, 0)
     cax.plot([-0.4], [plot_alt], marker = (3, 0, 270), color = 'white', markersize = 6, clip_on = False)
     cax.plot([-1.0], [plot_alt], marker = '$\u2600$', color = 'orange', markersize = 10, clip_on = False)
+
+def create_video(image_folder_path, video_output_path, frame_rate):
+    """
+    Combines folder of .png images to create a .mp4 video
+
+    :param image_folder_path: Path to folder containing images.
+    :type image_folder_path: str
+    :param video_output_path: Destination path for output video
+    :type video_output_path: str
+    :param frame_rate: Video frames per second
+    :type frame_rate: int
+    """
+    
+    images = [img for img in sorted(os.listdir(image_folder_path)) if img.endswith(".png")]
+    frame = cv2.imread(os.path.join(image_folder_path, images[0]))
+    
+    height, width, _ = frame.shape
+    
+    video = cv2.VideoWriter(video_output_path, 0, frame_rate, (width, height))
+    
+    for image in images:
+        video.write(cv2.imread(os.path.join(image_folder_path, image)))
+    
+    cv2.destroyAllWindows()
+    video.release()
