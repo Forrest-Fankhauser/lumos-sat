@@ -1,9 +1,23 @@
 .. toctree::
+   :maxdepth: 1
    :hidden:
+   :caption: Getting Started
 
-   Home page <self>
-   Usage <usage>
-   For Developers <dev>
+   Installation <user_install>
+   Making a Satellite Model <satellite_model>
+
+.. toctree::
+   :maxdepth: 1
+   :hidden:
+   :caption: Development
+
+   Installation <dev_install>
+
+.. toctree::
+   :maxdepth: 1
+   :hidden:
+   :caption: Reference
+
    API Reference <_autosummary/lumos>
 
 Welcome to the Lumos documentation
