@@ -174,9 +174,22 @@ def calculate_intensity(
             sun_contribution = sun_contribution + surface_brdf * surface_normalization * observer_normalization
 
         if include_earthshine:
-            surface_normalizations = np.clip( surface_normal[0] * panel_sat_x 
-                             + surface_normal[1] * panel_sat_y
-                             + surface_normal[2] * panel_sat_z, 0, None)**2
+
+            surface_normalizations = np.clip(
+                - surface_normal[0] * panel_sat_x \
+                - surface_normal[1] * panel_sat_y \
+                - surface_normal[2] * panel_sat_z,
+                0,
+                None
+            )
+
+            panel_observing_normalization = np.clip(
+                panel_nx * panel_sat_x
+                + panel_ny * panel_sat_y
+                + panel_nz * panel_sat_z,
+                0,
+                None
+            )
 
             surface_brdf = surface.brdf( (-panel_sat_x, -panel_sat_y, -panel_sat_z),
                                           surface_normal,
@@ -184,7 +197,8 @@ def calculate_intensity(
             
             earth_contribution = earth_contribution \
                   + np.sum(panel_brdfs * surface_brdf 
-                         * panel_normalizations * surface_normalizations
+                         * panel_normalizations * observer_normalization 
+                         * surface_normalizations * panel_observing_normalization
                          * panel_areas / dist_panels_2_sat**2 )
         
         intensity = intensity + lumos.constants.SUN_INTENSITY * surface.area * (sun_contribution + earth_contribution) / dist_sat_2_obs ** 2
