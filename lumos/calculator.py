@@ -5,6 +5,7 @@ Main brightness calculator for Lumos
 import numpy as np
 import lumos.constants
 import lumos.geometry
+import astropy.coordinates
 
 def get_earthshine_panels(sat_z, angle_past_terminator, density):
     """
@@ -333,3 +334,19 @@ def get_intensity_observer_frame(
 
     intensity = intensity.reshape(output_shape)
     return intensity
+
+def get_sun_alt_az(time, observer_location):
+    
+    """
+    Convenience function for finding the altitude and azimuth of the sun
+
+    :param time: Time of observation
+    :type time: :class:`astropy.time.Time`
+    :param observer_location: Location of observation
+    :type observer_location: :class:`astropy.coordinates.EarthLocation`
+    """
+
+    aa_frame = astropy.coordinates.AltAz(obstime = time, location = observer_location)
+    sun_altaz = astropy.coordinates.get_sun(time).transform_to(aa_frame)
+    return sun_altaz.alt.degree, sun_altaz.az.degree
+
