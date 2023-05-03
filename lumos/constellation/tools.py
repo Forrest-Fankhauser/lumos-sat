@@ -1,3 +1,7 @@
+"""
+Tools for getting TLEs from Celestrak and SpaceTrack
+"""
+
 import requests
 
 def query_celestrak(filename, query, value, format, supplemental = False):

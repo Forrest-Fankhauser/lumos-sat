@@ -1,4 +1,5 @@
 """ Library of Satellite Constellations """
+
 import numpy as np
 import sgp4.api
 import astropy.time
@@ -33,6 +34,7 @@ class Constellation:
     def get_hcs_position(self, time, earth_location):
         """
         Gets position of all satellites in constellation in HCS frame
+        
         :param time: Time at which to get positions
         :type time: :class:`astropy.time.Time`
         :param earth_location: Location at which to get positions in HCS frame

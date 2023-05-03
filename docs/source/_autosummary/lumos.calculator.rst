@@ -1,4 +1,4 @@
-lumos.calculator
+﻿lumos.calculator
 ================
 
 .. automodule:: lumos.calculator
@@ -19,6 +19,7 @@ lumos.calculator
       get_earthshine_panels
       get_intensity_observer_frame
       get_intensity_satellite_frame
+      get_sun_alt_az
    
    
 
