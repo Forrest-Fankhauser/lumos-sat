@@ -278,7 +278,7 @@ def get_intensity_observer_frame(
     sat_heights, 
     sat_altitudes, 
     sat_azimuths,
-    sun_altitude, 
+    sun_altitude,
     sun_azimuth,
     include_sun = True,
     include_earthshine = True,
@@ -296,7 +296,7 @@ def get_intensity_observer_frame(
     :type sat_altitudes: float or :class:`np.ndarray`
     :param sat_azimuths: Satellite azimuths in HCS frame (degrees)
     :type sat_azimuths: float or :class:`np.ndarray`
-    :param sun_alitutde: Altitude of sun in HCS frame (degrees)
+    :param sun_altitude: Altitude of sun in HCS frame (degrees)
     :type sun_altitude: float
     :param sun_azimuth: Azimuth of sun in HCS frame (degrees)
     :type sun_azimuth: float
@@ -313,7 +313,7 @@ def get_intensity_observer_frame(
     """
     
     if sun_altitude > 0:
-        raise ValueError("Observatory is in daylight!")
+        raise ValueError(f"Observatory is in daylight! Sun Altitude = {sun_altitude}")
     
     sat_alts, sat_azs = np.asarray(sat_altitudes), np.asarray(sat_azimuths)
     output_shape = sat_alts.shape
@@ -328,7 +328,7 @@ def get_intensity_observer_frame(
         sun_altitude, sun_azimuth)
 
     for (i, (x, y, z, alpha, h)) in enumerate(zip(obs_x, obs_y, obs_z, angle_past_terminator, sat_heights)):
-        intensity[i] = get_intensity_observer_frame(
+        intensity[i] = get_intensity_satellite_frame(
             sat_surfaces, h, alpha, (x, y, z),
             include_sun, include_earthshine, earth_panel_density, earth_brdf)
 
