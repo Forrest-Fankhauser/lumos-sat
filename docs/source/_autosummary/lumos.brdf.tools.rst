@@ -1,4 +1,4 @@
-lumos.brdf.tools
+﻿lumos.brdf.tools
 ================
 
 .. automodule:: lumos.brdf.tools
@@ -17,6 +17,7 @@ lumos.brdf.tools
    
       fit
       pack_binomial_parameters
+      read_brdf
    
    
 
