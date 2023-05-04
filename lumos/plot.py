@@ -100,14 +100,11 @@ def contour_satellite_frame(
     circ = matplotlib.patches.Circle((0, 0), max_dist , transform=ax.transData, facecolor = (1, 1, 1))
     ax.add_patch(circ)
 
-    cmap = matplotlib.colormaps[cmap]
-    norm = matplotlib.colors.Normalize(levels[0], levels[1])
-
     cs = ax.contourf(observers.dists_on_plane / 1000,
                     observers.dists_off_plane / 1000,
                     values,
-                    cmap = cmap,
-                    norm = norm,
+                    cmap = matplotlib.colormaps[cmap],
+                    norm = matplotlib.colors.Normalize(levels[0], levels[1]),
                     levels = range(levels[0], levels[1] + 1),
                     extend = 'both')
     
@@ -178,15 +175,12 @@ def contour_observer_frame(
     if levels is None:
         levels = (values.min(), values.max())
 
-    cmap = matplotlib.colormaps[cmap]
-    norm = matplotlib.colors.Normalize(levels[0], levels[1])
-
     ax.contourf(
         np.deg2rad(azimuths),
         90 - altitudes,
         values,
-        cmap = cmap,
-        norm = norm,
+        cmap = matplotlib.colormaps[cmap],
+        norm = matplotlib.colors.Normalize(levels[0], levels[1]),
         levels = range(levels[0], levels[1] + 1),
         extend = 'both'
         )
@@ -200,14 +194,11 @@ def contour_observer_frame(
     ax.set_rlabel_position(-22.5)
     ax.grid(True)
 
-def colorbar(cax, levels, label):
+def colorbar(cax, levels):
     cmap = matplotlib.colormaps['plasma_r']
     norm = matplotlib.colors.Normalize(levels[0], levels[1])
     plt.colorbar(matplotlib.cm.ScalarMappable(norm=norm, cmap=cmap), cax = cax, extend = 'both')
-    cax.invert_yaxis()
     cax.set_aspect(3)
-    cax.set_ylabel(label)
-    cax.yaxis.set_label_position("left")
 
 def mark_sun_azimuth_observer_frame(
     ax,

@@ -6,11 +6,31 @@ import numpy as np
 import scipy.optimize
 import lumos.conversions
 
+def read_brdf(brdf_file_path):
+    """
+    Reads data from a BRDF file
+
+    :param brdf_file_path: Path to the BRDF file
+    :type brdf_file_path: str
+    :return: :math:`\\phi_i, \\theta_i, \\phi_o, \\theta_o, BRDF`
+    :rtype: tuple[:class:`np.ndarray`]
+    """
+
+    data = np.loadtxt(brdf_file_path, skiprows = 1)
+
+    phi_in = data[:, 0]
+    theta_in = data[:, 1]
+    phi_out = data[:, 2]
+    theta_out = data[:, 3]
+    brdf = data[:, 4]
+
+    return phi_in, theta_in, phi_out, theta_out, brdf
+
 def fit(
         data_file,
         model_func,
-        bounds,
-        p0,
+        bounds = None,
+        p0 = None,
         log_space = True,
         clip = 0
         ):
@@ -32,13 +52,9 @@ def fit(
     :type clip: float
     """
 
-    data = np.loadtxt(data_file, skiprows = 1)
-
-    phi_in = np.deg2rad(data[:, 0])
-    theta_in = np.deg2rad(data[:, 1])
-    phi_out = np.deg2rad(data[:, 2])
-    theta_out = np.deg2rad(data[:, 3])
-    brdf = data[:, 4]
+    phi_in, theta_in, phi_out, theta_out, brdf = read_brdf(data_file)
+    phi_in, theta_in = np.deg2rad(phi_in), np.deg2rad(theta_in)
+    phi_out, theta_out = np.deg2rad(phi_out), np.deg2rad(theta_out)
 
     mask = brdf > clip
 
@@ -74,7 +90,7 @@ def fit(
 
     return popt
 
-def pack_binomial_parameters(self, n, m, l1, l2, *params):
+def pack_binomial_parameters(n, m, l1, l2, *params):
     """
     Convert list into B & C matrices, which can then be passed to the Binomial Model
 
