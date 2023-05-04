@@ -1,31 +1,6 @@
-lumos.constellation.tools
+﻿lumos.constellation.tools
 =========================
 
-.. automodule:: lumos.constellation.tools
+.. currentmodule:: lumos.constellation
 
-   
-   
-   
-
-   
-   
-   .. rubric:: Functions
-
-   .. autosummary::
-      :toctree:
-      :nosignatures:
-   
-      query_celestrak
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-
-
+.. automodule:: tools

@@ -1,31 +1,6 @@
-lumos.brdf
+﻿lumos.brdf
 ==========
 
-.. automodule:: lumos.brdf
+.. currentmodule:: lumos
 
-   
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-
-
-.. autosummary::
-   :toctree:
-   :template: module-template.rst
-   :recursive:
-
-   lumos.brdf.library
-   lumos.brdf.tools
-
+.. automodule:: brdf

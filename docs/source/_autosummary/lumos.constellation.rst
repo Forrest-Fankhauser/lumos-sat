@@ -1,31 +1,6 @@
 ﻿lumos.constellation
 ===================
 
-.. automodule:: lumos.constellation
+.. currentmodule:: lumos
 
-   
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-
-
-.. autosummary::
-   :toctree:
-   :template: module-template.rst
-   :recursive:
-
-   lumos.constellation.library
-   lumos.constellation.tools
-
+.. automodule:: constellation

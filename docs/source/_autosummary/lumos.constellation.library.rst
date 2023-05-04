@@ -1,33 +1,6 @@
-lumos.constellation.library
+﻿lumos.constellation.library
 ===========================
 
-.. automodule:: lumos.constellation.library
+.. currentmodule:: lumos.constellation
 
-   
-   
-   
-
-   
-   
-   
-
-   
-   
-   .. rubric:: Classes
-
-   .. autosummary::
-      :toctree:
-      :template: class-template.rst
-      :nosignatures:
-   
-      Constellation
-      ConstellationFromTLE
-   
-   
-
-   
-   
-   
-
-
-
+.. automodule:: library

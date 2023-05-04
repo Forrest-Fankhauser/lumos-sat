@@ -1,34 +1,6 @@
-lumos.geometry
+﻿lumos.geometry
 ==============
 
-.. automodule:: lumos.geometry
+.. currentmodule:: lumos
 
-   
-   
-   
-
-   
-   
-   
-
-   
-   
-   .. rubric:: Classes
-
-   .. autosummary::
-      :toctree:
-      :template: class-template.rst
-      :nosignatures:
-   
-      EarthMesh
-      GroundObservers
-      Surface
-   
-   
-
-   
-   
-   
-
-
-
+.. automodule:: geometry

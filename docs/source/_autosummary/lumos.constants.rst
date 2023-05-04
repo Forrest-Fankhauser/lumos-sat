@@ -1,33 +1,6 @@
-lumos.constants
+﻿lumos.constants
 ===============
 
-.. automodule:: lumos.constants
+.. currentmodule:: lumos
 
-   
-   
-   .. rubric:: Module attributes
-
-   .. autosummary::
-      :toctree:
-   
-      SPEED_OF_LIGHT
-      WAVELENGTH
-      EARTH_RADIUS
-      SUN_INTENSITY
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-
-
+.. automodule:: constants

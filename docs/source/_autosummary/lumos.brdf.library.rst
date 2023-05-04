@@ -1,35 +1,6 @@
-lumos.brdf.library
+﻿lumos.brdf.library
 ==================
 
-.. automodule:: lumos.brdf.library
+.. currentmodule:: lumos.brdf
 
-   
-   
-   
-
-   
-   
-   .. rubric:: Functions
-
-   .. autosummary::
-      :toctree:
-      :nosignatures:
-   
-      ABG
-      BINOMIAL
-      GAUSSIAN
-      LAMBERTIAN
-      PHONG
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-
-
+.. automodule:: library

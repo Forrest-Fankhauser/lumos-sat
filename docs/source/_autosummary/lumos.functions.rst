@@ -1,36 +1,6 @@
-lumos.functions
+﻿lumos.functions
 ===============
 
-.. automodule:: lumos.functions
+.. currentmodule:: lumos
 
-   
-   
-   
-
-   
-   
-   .. rubric:: Functions
-
-   .. autosummary::
-      :toctree:
-      :nosignatures:
-   
-      Rx
-      Ry
-      Rz
-      det_2
-      det_3
-      inv_3
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-
-
+.. automodule:: functions
