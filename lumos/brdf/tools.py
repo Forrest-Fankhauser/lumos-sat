@@ -42,9 +42,9 @@ def fit(
     :type data_file: str
     :param model_func: A BRDF model to fit
     :type model_func: function
-    :param bounds: Bounds passed to :function:`scipy.optimize.curve_fit`
+    :param bounds: Bounds passed to :py:func:`scipy.optimize.curve_fit`
     :type bounds: tuple
-    :param p0: Initial guess for parameters passed to :function:`scipy.optimize.curve_fit`
+    :param p0: Initial guess for parameters passed to :py:func:`scipy.optimize.curve_fit`
     :type p0: tuple
     :param log_space: Whether or not to fit BRDF in log_space
     :type log_space: bool
