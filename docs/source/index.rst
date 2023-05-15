@@ -4,7 +4,10 @@
    :caption: Getting Started
 
    Installation <user_install>
-   Making a Satellite Model <satellite_model>
+   Bidirectional Reflectance Distribution Functions (BRDFs) <brdfs>
+   Creating a Satellite Model <satellite_model>
+   Brightness in the Satellite Frame <satellite_frame>
+   Brightness in the Observer Frame <observer_frame>
 
 .. toctree::
    :maxdepth: 1

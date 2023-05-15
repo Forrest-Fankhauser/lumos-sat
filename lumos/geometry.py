@@ -97,9 +97,6 @@ class GroundObservers(EarthMesh):
         super().__init__(angles_off_plane, angles_on_plane)
     
     def __iter__(self):
-        """
-        Iteration Method
-        """
         for i in range(self.shape[0]):
             for j in range(self.shape[1]):
-                yield i, j, (self.x[i, j], self.y[i, j], self.z[i, j])
+                yield i, j
