@@ -8,8 +8,7 @@ author = 'Forrest Fankhauser'
 extensions = [
    'sphinx.ext.autodoc',
    'sphinx.ext.autosummary',
-   'sphinx.ext.viewcode',
-   'sphinx_copybutton'
+   'sphinx.ext.viewcode'
 ]
 
 autosummary_typehints = None
