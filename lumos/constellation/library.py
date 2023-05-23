@@ -19,7 +19,7 @@ class Constellation:
         :param time: Time at which to get positions
         :type time: :class:`astropy.time.Time`
         :return: (x, y, z) position measured in meters
-        :rtype: tuple[:class:`np.ndarray]
+        :rtype: tuple[:class:`np.ndarray`]
         """
 
         jd1 = np.array([time.jd1])

@@ -11,8 +11,8 @@ class Surface:
     :param area: Area of surface :math:`m^2`
     :type area: float
     :param normal: Normal vector of surface. Measured in brightness frame. A function of
-    the angle past terminator may be passed, which must return the surface normal as 
-    a :class:`np.ndarray` for given angles past the terminator.
+        the angle past terminator may be passed, which must return the surface normal as 
+        a :class:`np.ndarray` for given angles past the terminator.
     :type normal: :class:`np.ndarray` or function
     :param brdf: Bidirectional Reflectance Distribution Function (BRDF) of surface.
     :type brdf: function

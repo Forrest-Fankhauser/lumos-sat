@@ -3,16 +3,14 @@
    :hidden:
    :caption: Getting Started
 
-   Installation <user_install>
-   Bidirectional Reflectance Distribution Functions (BRDFs) <brdfs>
-   Creating a Satellite Model <satellite_model>
-   Brightness in the Satellite Frame <satellite_frame>
-   Brightness in the Observer Frame <observer_frame>
+   Tutorial <tutorial>
+   Starlink v1.5 Brightness Model <starlink_v1p5>
+   Advanced Topics <advanced_topics>
 
 .. toctree::
    :maxdepth: 1
    :hidden:
-   :caption: Development
+   :caption: For Developers
 
    Installation <dev_install>
 
@@ -26,6 +24,9 @@
 Welcome to the Lumos documentation
 ==================================
 
+**DOCUMENTATION IN PROGRESS**
+**Contact Forrest Fankhauser at fafankhauser@ucdavis.edu for help**
+
 **Lumos** is a Python library for calculating the optical brightness of artificial satellites.
 
 More specifically, Lumos allows the user to:
@@ -38,3 +39,5 @@ Possible applications include:
 
 - Allowing optical brightness to be used as a design constraint by satellite operators.
 - Lets astronomers plan observations based on when and where in the sky satellites are brightest.
+
+For more information, see the paper at: `<https://arxiv.org/abs/2305.11123>`_
