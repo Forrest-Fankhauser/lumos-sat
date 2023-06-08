@@ -4,6 +4,7 @@ Main brightness calculator for Lumos
 
 import numpy as np
 import lumos.constants
+import lumos.conversions
 import lumos.geometry
 import astropy.coordinates
 
