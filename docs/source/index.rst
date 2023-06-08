@@ -25,7 +25,8 @@ Welcome to the Lumos documentation
 ==================================
 
 **DOCUMENTATION IN PROGRESS**
-**Contact Forrest Fankhauser at fafankhauser@ucdavis.edu for help**
+
+**Contact Forrest Fankhauser at fafankhauser@ucdavis.edu for information**
 
 **Lumos** is a Python library for calculating the optical brightness of artificial satellites.
 
@@ -40,4 +41,8 @@ Possible applications include:
 - Allowing optical brightness to be used as a design constraint by satellite operators.
 - Lets astronomers plan observations based on when and where in the sky satellites are brightest.
 
-For more information, see the paper at: `<https://arxiv.org/abs/2305.11123>`_
+For more information, see: 
+`Satellite Optical Brightness (Fankhauser et. al 2023) <https://arxiv.org/abs/2305.11123>`_
+
+Why is Satellite Brightness Important?
+======================================

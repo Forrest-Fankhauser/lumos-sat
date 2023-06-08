@@ -1,4 +1,4 @@
-lumos.plot
+﻿lumos.plot
 ==========
 
 .. automodule:: lumos.plot
@@ -17,6 +17,7 @@ lumos.plot
    
       BRDF_1D
       BRDF_2D
+      brightness_summary_satellite_frame
       colorbar
       contour_observer_frame
       contour_satellite_frame

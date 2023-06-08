@@ -1,4 +1,4 @@
-lumos.geometry.GroundObservers
+﻿lumos.geometry.GroundObservers
 ==============================
 
 .. currentmodule:: lumos.geometry
@@ -16,6 +16,7 @@ lumos.geometry.GroundObservers
    .. autosummary::
       :nosignatures:
    
+      ~GroundObservers.calculate_intensity
    
    
 
