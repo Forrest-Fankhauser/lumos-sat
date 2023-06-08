@@ -139,11 +139,11 @@ def mark_angles_above_horizon_satellite_frame(
         x = R * np.cos(theta)
         y = R * np.sin(theta)
 
-        annotation_loc = (0.707 * R, 0.707 * R)
-        y = np.where( (x - annotation_loc[0])**2 + (y - annotation_loc[1]) ** 2 < 100**2, np.inf, y)
+        annotation_loc = (0.707 * R, -0.707 * R)
+        y = np.where( (x - annotation_loc[0])**2 + (y - annotation_loc[1]) ** 2 < 200**2, np.inf, y)
 
-        ax.plot(x, y, '--k')
-        ax.annotate(f'{np.rad2deg(angle):.0f}°', annotation_loc, fontsize = 10, color = 'black', 
+        ax.plot(x, y, '--', color = "grey", linewidth = 0.8)
+        ax.annotate(f'{np.rad2deg(angle):.0f}°', annotation_loc, fontsize = 8, color = 'grey', 
                 horizontalalignment = 'center', verticalalignment = 'center')
 
 def contour_observer_frame(
@@ -279,3 +279,101 @@ def create_video(image_folder_path, video_output_path, frame_rate):
     
     cv2.destroyAllWindows()
     video.release()
+
+def brightness_summary_satellite_frame(
+        surfaces, angles_past_terminator, sat_height,
+        include_sun = True, include_earthshine = False,
+        earth_panel_density = 151, earth_brdf = None,
+        levels = (0, 10)):
+    
+    N_frames = len(angles_past_terminator)
+
+    with plt.style.context("dark_background"):
+        fig, axs = plt.subplots(1, N_frames + 1,
+                                width_ratios = N_frames * [1] + [0.1])
+
+        for ax, angle_past_terminator in zip(axs[:-1], angles_past_terminator):
+
+            observers = lumos.geometry.GroundObservers(
+                sat_height,
+                np.deg2rad(angle_past_terminator),
+                density = 50
+            )
+
+            observers.calculate_intensity(surfaces)
+            
+            # Convert intensity to AB Magnitude
+            ab_magnitudes = lumos.conversions.intensity_to_ab_mag(observers.intensities)
+
+            # Plots intensity
+            lumos.plot.contour_satellite_frame(
+                ax,
+                observers,
+                ab_magnitudes,
+                levels = levels,
+                cmap = 'plasma_r'
+                )
+            
+            ax.set_title(r"$\alpha = $" + f"{angle_past_terminator:0.2f}°")
+
+            mark_angles_above_horizon_satellite_frame(ax, observers)
+        
+        for ax in axs[1:-1]:
+            ax.set_ylabel("")
+            ax.set_yticklabels("")
+
+        colorbar(axs[-1], levels)
+        axs[-1].invert_yaxis()
+        axs[-1].set_ylabel("AB Magnitude")
+        axs[-1].set_aspect( 15 / (levels[1] - levels[0]))
+
+        plt.show()
+
+# def brightness_summary_observer_frame(
+#         surfaces, angles_past_terminator, sat_height,
+#         include_sun = True, include_earthshine = False,
+#         earth_panel_density = 151, earth_brdf = None,
+#         levels = (0, 10)):
+    
+#     N_frames = len(angles_past_terminator)
+
+#     with plt.style.context("dark_background"):
+#         fig, axs = plt.subplots(1, N_frames + 1,
+#                                 width_ratios = N_frames * [1] + [0.1])
+
+#         for ax, angle_past_terminator in zip(axs[:-1], angles_past_terminator):
+
+#             observers = lumos.geometry.GroundObservers(
+#                 sat_height,
+#                 np.deg2rad(angle_past_terminator),
+#                 density = 50
+#             )
+
+#             observers.calculate_intensity(surfaces)
+            
+#             # Convert intensity to AB Magnitude
+#             ab_magnitudes = lumos.conversions.intensity_to_ab_mag(observers.intensities)
+
+#             # Plots intensity
+#             lumos.plot.contour_satellite_frame(
+#                 ax,
+#                 observers,
+#                 ab_magnitudes,
+#                 levels = levels,
+#                 cmap = 'plasma_r'
+#                 )
+            
+#             ax.set_title(r"$\alpha = $" + f"{angle_past_terminator:0.2f}°")
+
+#             mark_angles_above_horizon_satellite_frame(ax, observers)
+        
+#         for ax in axs[1:-1]:
+#             ax.set_ylabel("")
+#             ax.set_yticklabels("")
+
+#         colorbar(axs[-1], levels)
+#         axs[-1].invert_yaxis()
+#         axs[-1].set_ylabel("AB Magnitude")
+#         axs[-1].set_aspect( 15 / (levels[1] - levels[0]))
+
+#         plt.show()
