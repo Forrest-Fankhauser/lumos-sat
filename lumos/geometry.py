@@ -4,6 +4,7 @@ Geometry objects which are used throughout Lumos
 
 import numpy as np
 import lumos.constants
+import lumos.calculator
 class Surface:
     """
     Container to hold area, normal vector, and BRDF of a surface 
@@ -95,8 +96,40 @@ class GroundObservers(EarthMesh):
         angles_on_plane = np.linspace(-self.max_angle, self.min_angle, density)
         
         super().__init__(angles_off_plane, angles_on_plane)
+        self.sat_height = sat_height
+        self.angle_past_terminator = angle_past_terminator
     
-    def __iter__(self):
+    def calculate_intensity(self, surfaces,
+                            include_sun = True, include_earthshine = False, 
+                            earth_panel_density = 151, earth_brdf = None):
+        """
+        Calculates intensity for observers on ground
+        
+        :param surfaces: List of satellite surfaces
+        :type surfaces: List[:py:func:`lumos.geometry.Surface`]
+        :param include_sun: Whether to include contribution of brightness due to direct sunlight
+        :type include_sun: bool, optional
+        :param include_earthshine: Whether to include contribution of brightness due to earthshine
+        :type include_earthshine: bool, optional
+        :param earth_panel_density: Earthshine discretization has earth_panel_density squared pixels
+        :type earth_panel_density: int, optional
+        :param earth_brdf: The BRDF of Earth's surface
+        :type earth_brdf: callable
+        """
+
+        # Sets up an array to hold the intensity seen by each ground observer
+        self.intensities = np.zeros(self.shape)
+
         for i in range(self.shape[0]):
             for j in range(self.shape[1]):
-                yield i, j
+                
+                self.intensities[i, j] = \
+                    lumos.calculator.get_intensity_satellite_frame(
+                        surfaces,
+                        self.sat_height,
+                        self.angle_past_terminator,
+                        (self.x[i, j], self.y[i, j], self.z[i, j]),
+                        include_sun,
+                        include_earthshine,
+                        earth_panel_density,
+                        earth_brdf)
