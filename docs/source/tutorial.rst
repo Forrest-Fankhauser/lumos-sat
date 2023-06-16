@@ -1,5 +1,5 @@
-Tutorial
---------
+Basic Tutorial
+--------------
 
 There are 3 steps to estimate satellite brightness:
 
@@ -194,6 +194,13 @@ below the satellite!
 .. image:: _static/nadir_aluminum_rotated_2.png
     :width: 800
 
+The following interactive graph shows how light is specularly scattered onto the ground
+by our rotated aluminum plate:
+
+.. raw:: html
+
+    <iframe src="https://www.desmos.com/calculator/a2v0zi68ek" width="700", height="400"></iframe>
+
 What if, instead of just plotting a brightness summary, we want to get the actual intensity
 values calculated by Lumos? We simply call the calculation directly. Here's an example
 which calculates the location of the observer that sees the brightest reflection from the
@@ -230,3 +237,51 @@ Internally, Lumos converts these sky positions to coordinates in the brightness 
 calculates brightness.
 
 Let's see an example using our nadir-facing aluminum plate:
+
+.. literalinclude:: ../../examples/aluminum_observer_frame.py
+    :linenos:
+    :lines: 1-10
+    :lineno-start: 1
+    :caption: aluminum_observer_frame.py
+
+.. image:: _static/nadir_aluminum_observer.png
+    :width: 800
+
+.. warning::
+    You must always specify exactly 5 sun altitudes and 5 sun azimuths for 
+    :py:func:`lumos.plot.brightness_summary_observer_frame` to work.
+
+So what does this image show? Each circle shows a view of the entire night sky. The contour
+color is filled according to the brightness a satellite would appear if it was in that point
+in the sky. The center corresponds to a satellite straight overhead. North, West, South, and East
+are marked on the edge of the circle (which is the horizon). Altitude is shown in increments
+of 10 degrees. As an example, we see that when the sun is at -27 degrees, the brightest satellites
+would be in the eastern sky, about 25 degrees above the horizon. This light is forward scattered
+by our nadir aluminum plate. In most of the western sky and directly overhead, 
+satellites are shadowed by Earth.
+
+To get numerical intensity values we can call the Lumos calculator directly:
+
+.. literalinclude:: ../../examples/aluminum_observer_frame.py
+    :linenos:
+    :lines: 13-40
+    :lineno-start: 13
+    :caption: aluminum_observer_frame.py
+
+.. code-block:: console
+
+    Brightest: 4.6 AB Magnitude
+    Altitude: 23°
+    Azimuth: 91°
+
+.. note::
+    To find the altitude and azimuth of the sun at a specific time and location,
+    you can use :py:func:`lumos.calculator.get_sun_alt_az`. You must pass in an
+    :py:class:`astropy.time.Time` object and a :py:class:`astropy.location.EarthLocation`
+    object.
+
+Conclusion
+==========
+
+That wraps up everything you need to know for the most basic usage of Lumos. Head over to
+Advanced Topics for more helpful tips.

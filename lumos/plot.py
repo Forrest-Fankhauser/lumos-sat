@@ -9,6 +9,7 @@ import numpy as np
 import lumos.conversions
 import lumos.constants
 import lumos.geometry
+import lumos.calculator
 
 import os
 import cv2
@@ -198,7 +199,7 @@ def colorbar(cax, levels):
     cmap = matplotlib.colormaps['plasma_r']
     norm = matplotlib.colors.Normalize(levels[0], levels[1])
     plt.colorbar(matplotlib.cm.ScalarMappable(norm=norm, cmap=cmap), cax = cax, extend = 'both')
-    cax.set_aspect(3)
+    cax.set_aspect(2)
 
 def mark_sun_azimuth_observer_frame(
     ax,
@@ -255,6 +256,24 @@ def mark_sun_altitude_observer_frame(
     cax.plot([-0.4], [plot_alt], marker = (3, 0, 270), color = 'white', markersize = 6, clip_on = False)
     cax.plot([-1.0], [plot_alt], marker = '$\u2600$', color = 'orange', markersize = 10, clip_on = False)
 
+def plot_compass(ax):
+    ax.arrow(0, 0, 0, 0.75, width = 0.05, color = "white", head_length = 0.2, head_width = 0.2)
+    ax.arrow(0, 0, -0.75, 0, width = 0.05, color = "white", head_length = 0.2, head_width = 0.2)
+    ax.scatter([0], [0], s = 30, c = "white", zorder = 1)
+    ax.annotate("N", (0, 1.15), horizontalalignment = 'center', 
+                    verticalalignment = 'center', fontsize = 14, annotation_clip = False,
+                    fontweight = 'bold')
+    ax.annotate("E", (-1.15, 0), horizontalalignment = 'center', 
+                    verticalalignment = 'center', fontsize = 14, annotation_clip = False,
+                    fontweight = 'bold')
+    ax.grid(False)
+    ax.set_xticks([])
+    ax.set_yticks([])
+    ax.set_xlim((-1.5, 0.5))
+    ax.set_ylim((-0.5, 1.5))
+    ax.set_frame_on(False)
+    ax.set_aspect("equal")
+
 def create_video(image_folder_path, video_output_path, frame_rate):
     """
     Combines folder of .png images to create a .mp4 video
@@ -306,7 +325,7 @@ def brightness_summary_satellite_frame(
             ab_magnitudes = lumos.conversions.intensity_to_ab_mag(observers.intensities)
 
             # Plots intensity
-            lumos.plot.contour_satellite_frame(
+            contour_satellite_frame(
                 ax,
                 observers,
                 ab_magnitudes,
@@ -329,51 +348,59 @@ def brightness_summary_satellite_frame(
 
         plt.show()
 
-# def brightness_summary_observer_frame(
-#         surfaces, angles_past_terminator, sat_height,
-#         include_sun = True, include_earthshine = False,
-#         earth_panel_density = 151, earth_brdf = None,
-#         levels = (0, 10)):
+def brightness_summary_observer_frame(
+        surfaces, sat_height, sun_altitudes, sun_azimuths,
+        include_sun = True, include_earthshine = False,
+        earth_panel_density = 151, earth_brdf = None,
+        levels = (0, 10)):
     
-#     N_frames = len(angles_past_terminator)
+    N_frames = len(sun_altitudes)
 
-#     with plt.style.context("dark_background"):
-#         fig, axs = plt.subplots(1, N_frames + 1,
-#                                 width_ratios = N_frames * [1] + [0.1])
+    altitudes = np.linspace(0, 90, 45)
+    azimuths = np.linspace(0, 360, 90)
+    altitudes, azimuths = np.meshgrid(altitudes, azimuths)
 
-#         for ax, angle_past_terminator in zip(axs[:-1], angles_past_terminator):
+    with plt.style.context("dark_background"):
+        fig = plt.figure(figsize = (6.4 * 2, 4.8 * 2))
 
-#             observers = lumos.geometry.GroundObservers(
-#                 sat_height,
-#                 np.deg2rad(angle_past_terminator),
-#                 density = 50
-#             )
+        cax = fig.add_axes([0, 0.25, 0.15, 0.3])
 
-#             observers.calculate_intensity(surfaces)
+        h = 0.8
+        w = h * 6 / 32
+
+        ax1 = fig.add_axes([0.5 - w/2 - 2 * (w + 0.0075), 0.025, w, h], projection = 'polar')
+        ax2 = fig.add_axes([0.5 - w/2 - 1 * (w + 0.0075), 0.025, w, h], projection = 'polar')
+        ax3 = fig.add_axes([0.5 - w/2 + 0 * (w + 0.0075), 0.025, w, h], projection = 'polar')
+        ax4 = fig.add_axes([0.5 - w/2 + 1 * (w + 0.0075), 0.025, w, h], projection = 'polar')
+        ax5 = fig.add_axes([0.5 - w/2 + 2 * (w + 0.0075), 0.025, w, h], projection = 'polar')
+        ax6 = fig.add_axes([0.85, 0.05, 0.45 * w, 0.45 * h])
+
+        axs = (ax1, ax2, ax3, ax4, ax5)
+
+        plot_compass(ax6)
+
+        for ax, sun_altitude, sun_azimuth in zip(axs, sun_altitudes, sun_azimuths):
+
+            intensities = lumos.calculator.get_intensity_observer_frame(
+                surfaces, sat_height, altitudes, azimuths,
+                sun_altitude, sun_azimuth, 
+                include_sun, include_earthshine, earth_panel_density, earth_brdf
+            )
             
-#             # Convert intensity to AB Magnitude
-#             ab_magnitudes = lumos.conversions.intensity_to_ab_mag(observers.intensities)
+            # Convert intensity to AB Magnitude
+            ab_magnitudes = lumos.conversions.intensity_to_ab_mag(intensities)
 
-#             # Plots intensity
-#             lumos.plot.contour_satellite_frame(
-#                 ax,
-#                 observers,
-#                 ab_magnitudes,
-#                 levels = levels,
-#                 cmap = 'plasma_r'
-#                 )
+            # Plots intensity
+            contour_observer_frame(ax, altitudes, azimuths, ab_magnitudes, levels, cmap = "plasma_r")
+
+            ax.set_xticklabels(["", "", "", ""])
+            ax.set_title(f"Sun Alt. = {sun_altitude:0.0f}°\nSun Az. = {sun_azimuth:0.0f}°")
+            ax.grid(linewidth = 0.5, alpha = 0.25)
             
-#             ax.set_title(r"$\alpha = $" + f"{angle_past_terminator:0.2f}°")
+        colorbar(cax, levels = levels)
+        cax.tick_params(labelsize = 14)
+        cax.set_ylabel("AB Magnitude", fontsize = 16)
+        cax.invert_yaxis()
+        cax.yaxis.set_label_position("left")
 
-#             mark_angles_above_horizon_satellite_frame(ax, observers)
-        
-#         for ax in axs[1:-1]:
-#             ax.set_ylabel("")
-#             ax.set_yticklabels("")
-
-#         colorbar(axs[-1], levels)
-#         axs[-1].invert_yaxis()
-#         axs[-1].set_ylabel("AB Magnitude")
-#         axs[-1].set_aspect( 15 / (levels[1] - levels[0]))
-
-#         plt.show()
+        plt.show()

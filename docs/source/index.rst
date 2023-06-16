@@ -3,16 +3,8 @@
    :hidden:
    :caption: Getting Started
 
-   Tutorial <tutorial>
-   Starlink v1.5 Brightness Model <starlink_v1p5>
+   Basic Tutorial <tutorial>
    Advanced Topics <advanced_topics>
-
-.. toctree::
-   :maxdepth: 1
-   :hidden:
-   :caption: For Developers
-
-   Installation <dev_install>
 
 .. toctree::
    :maxdepth: 1
@@ -21,12 +13,16 @@
 
    API Reference <_autosummary/lumos>
 
+.. toctree::
+   :maxdepth: 1
+   :hidden:
+   :caption: For Developers
+
+   Installation <dev_install>
+
+
 Welcome to the Lumos documentation
 ==================================
-
-**DOCUMENTATION IN PROGRESS**
-
-**Contact Forrest Fankhauser at fafankhauser@ucdavis.edu for information**
 
 **Lumos** is a Python library for calculating the optical brightness of artificial satellites.
 
@@ -46,3 +42,12 @@ For more information, see:
 
 Why is Satellite Brightness Important?
 ======================================
+
+After dusk and before dawn, LEO satellites scatter
+sunlight onto the the surface of Earth. This scattered light can interfere 
+with both casual stargazing and science from large ground-based observatories.
+As of 2023, there are more than 6,000 LEO satellites in operation, a 6-fold 
+increase over just two years. Many more planned satellite constellations are on the way!
+Predicting satellite brightness can help astronomers remove satellite streaks from telescope
+images or quantify the impact of satellites on astronomical discovery and can help
+satellite operators engineer dimmer satellites!
